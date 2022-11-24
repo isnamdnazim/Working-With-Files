@@ -29,6 +29,7 @@ namespace Files.Controllers
             return View();
         }
 
+        //single file upload
         public IActionResult SingleFile(IFormFile file)
         {
 
@@ -39,6 +40,8 @@ namespace Files.Controllers
             return RedirectToAction("Index");
         }
 
+
+        //multiple file uplaod
         public IActionResult MultipleFiles(IEnumerable<IFormFile> files)
         {
             int i = 0;
@@ -51,6 +54,19 @@ namespace Files.Controllers
                 i++;
             }
             
+            return RedirectToAction("Index");
+        }
+
+        //single File Upload to FilesModel.cs
+        public IActionResult FileInModel(FilesModel files)
+        {
+            using (var fileStream = new FileStream(
+                Path.Combine(_dir, $"{files.Name}.jpg"), 
+                FileMode.Create, 
+                FileAccess.Write))
+            {
+                files.File.CopyTo(fileStream);
+            }
             return RedirectToAction("Index");
         }
 
